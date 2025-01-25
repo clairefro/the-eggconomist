@@ -1,3 +1,5 @@
+![The Eggconomist](./eggconomist.png)
+
 ## The Eggconomist
 
 Eggspert analysis on the US economy.
