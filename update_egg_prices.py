@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 # Constants
-CSV_URL = "https://raw.githubusercontent.com/clairefro/the-eggconomist/refs/heads/main/egg_prices.csv"  # Replace with your GitHub raw URL
+CSV_URL = "https://raw.githubusercontent.com/clairefro/the-eggconomist/refs/heads/main/egg_prices.csv"  
 CSV_FILE = "egg_prices.csv"
 
 def fetch_latest_csv():
@@ -19,12 +19,12 @@ def get_last_row(csv_data):
     """Get the last row of the CSV data and extract {{year}}{{period}}."""
     reader = csv.reader(csv_data.strip().splitlines())
     rows = list(reader)
-    if len(rows) > 1:  # Check if there are rows (excluding header)
+    if len(rows) > 1:  
         last_row = rows[-1]
-        year, period = last_row[0], last_row[1]  # Assuming year and period are the first two columns
+        year, period = last_row[0], last_row[1] 
         return f"{year}{period}"
     else:
-        return None  # No data in CSV yet
+        return None  # no data in CSV yet
 
 def fetch_egg_prices(api_key):
     """Fetch egg price data from the API."""
@@ -73,14 +73,14 @@ def main():
         csv_data = fetch_latest_csv()
         last_row_key = get_last_row(csv_data)
 
-        # # Fetch egg price data from the API
+        # Fetch egg price data from the BLS API
         egg_data = fetch_egg_prices(api_key)
         latest_egg_price_record = get_latest_egg_price(egg_data)
         latest_egg_key = f"{latest_egg_price_record['year']}{latest_egg_price_record['period']}"
 
         print(f"Latest egg price record: {latest_egg_price_record}")
 
-        # # Compare and update CSV if new data is available
+        # Compare and update CSV if new data is available
         if not last_row_key or latest_egg_key > last_row_key:
             print(f"Result: Found new egg price, adding to csv: {latest_egg_price_record['year']}{latest_egg_price_record['period']} - {latest_egg_price_record['value']}")            
             update_csv(CSV_FILE, latest_egg_price_record)
