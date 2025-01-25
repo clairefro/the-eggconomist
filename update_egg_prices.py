@@ -51,11 +51,16 @@ def update_csv(file_path, new_data):
 def commit_changes():
     """Commit changes to the CSV file."""
     import subprocess
-    subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
-    subprocess.run(["git", "config", "--global", "user.email", "actions@github.com"])
-    subprocess.run(["git", "add", CSV_FILE])
-    subprocess.run(["git", "commit", "-m", "Update egg prices"])
-    subprocess.run(["git", "push"])
+
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        print("Running in GitHub Actions. Committing changes...")
+        subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
+        subprocess.run(["git", "config", "--global", "user.email", "actions@github.com"])
+        subprocess.run(["git", "add", "egg_prices.csv"])
+        subprocess.run(["git", "commit", "-m", "Update egg prices"])
+        subprocess.run(["git", "push"])
+    else:
+        print("Not running in GitHub Actions. Skipping commit.")
 
 def main():
     try:
@@ -68,23 +73,20 @@ def main():
         csv_data = fetch_latest_csv()
         last_row_key = get_last_row(csv_data)
 
-        print(csv_data)
-        print(last_row_key)
-
         # # Fetch egg price data from the API
         egg_data = fetch_egg_prices(api_key)
         latest_egg_price_record = get_latest_egg_price(egg_data)
         latest_egg_key = f"{latest_egg_price_record['year']}{latest_egg_price_record['period']}"
 
-        print(egg_data)
+        print(f"Latest egg price record: {latest_egg_price_record}")
 
         # # Compare and update CSV if new data is available
         if not last_row_key or latest_egg_key > last_row_key:
-            print(f"Found new egg price, adding to csv: {latest_egg_price_record['year']}{latest_egg_price_record['period']} - {latest_egg_price_record['value']}")            
+            print(f"Result: Found new egg price, adding to csv: {latest_egg_price_record['year']}{latest_egg_price_record['period']} - {latest_egg_price_record['value']}")            
             update_csv(CSV_FILE, latest_egg_price_record)
             commit_changes()
         else:
-            print("No new data to add.")
+            print("Result: No new data to add.")
     except Exception as e:
         print("Error:", e)
 
