@@ -12,8 +12,23 @@ Data source: [U.S. Bureau of Labor Statistics](https://www.bls.gov/)
 
 setting env vars locally for testing
 
+**activate env**
+
+```py
+python3 -m venv myenv # if needed
+source myenv/bin/activate
 ```
-echo 'export BLS_API_KEY="api_key_here"' >> venv/bin/activate
+
+**for update_egg_prices.py**
+
+```sh
+echo 'export BLS_API_KEY="api_key_here"' >> myenv/bin/activate
 deactivate
-source venv/bin/activate
+source myenv/bin/activate
 ```
+
+**for webpage**
+
+`pip3 install livereload`
+
+`python3 dev_server.py`

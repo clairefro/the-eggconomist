@@ -4,7 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Eggconomist</title>
+    <meta name="description" content="Eggspert analysis of US economy" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- ChartJS  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ChartJS zoom plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs.plugin.zoom.min.js"></script>
+
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -18,6 +25,12 @@
   </head>
   <body>
     <h1>Egg Prices Over Time</h1>
+    <div class="chart-controls">
+      <button onclick="setTimeRange('6m')">6M</button>
+      <button onclick="setTimeRange('1y')">1Y</button>
+      <button onclick="setTimeRange('5y')">5Y</button>
+      <button onclick="setTimeRange('all')">All</button>
+    </div>
     <div id="chart-container">
       <canvas id="eggPriceChart"></canvas>
     </div>
