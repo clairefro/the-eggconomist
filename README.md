@@ -1,4 +1,4 @@
-![The Eggconomist](./the-eggconomist.png)
+![The Eggconomist](./banner.png)
 
 ## The Eggconomist
 
