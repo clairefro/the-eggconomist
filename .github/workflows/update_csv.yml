@@ -1,0 +1,33 @@
+name: Update CSV Data
+on:
+  schedule:
+    - cron: "0 0,12 * * *" # Runs at midnight and noon UTC
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Python script
+        env:
+          BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+        run: python update_egg_prices.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add egg_prices.csv
+          git commit -m "Update egg prices"
+          git push
