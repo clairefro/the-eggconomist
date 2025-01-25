@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 # Constants
-CSV_URL = "https://raw.githubusercontent.com/your-username/your-repo/main/egg_prices.csv"  # Replace with your GitHub raw URL
+CSV_URL = "https://raw.githubusercontent.com/clairefro/the-eggconomist/refs/heads/main/egg_prices.csv"  # Replace with your GitHub raw URL
 CSV_FILE = "egg_prices.csv"
 
 def fetch_latest_csv():
@@ -28,10 +28,11 @@ def get_last_row(csv_data):
 
 def fetch_egg_prices(api_key):
     """Fetch egg price data from the API."""
-    api_url = f"https://api.example.com/eggs?registrationkey={api_key}"  # Append API key as a query parameter
+    eggs_series_id = "APU0000708111"  # BLS Series ID for Average Price: Eggs, Grade A, Large (Cost per Dozen) in U.S. City Average
+    api_url = f"https://api.bls.gov/publicAPI/v2/timeseries/data/{eggs_series_id}?registrationkey={api_key}" 
     response = requests.get(api_url)
     if response.status_code == 200:
-        return response.json()  # Assuming the API returns an array of {year, period, value}
+        return response.json()["Results"]["series"][0]["data"]  
     else:
         raise Exception("Failed to fetch data from API")
 
@@ -58,23 +59,29 @@ def commit_changes():
 
 def main():
     try:
-        # Fetch the API key from environment variables
-        api_key = os.getenv("API_KEY")
+        # Fetch the BLS API key from environment variables
+        api_key = os.getenv("BLS_API_KEY")
         if not api_key:
-            raise Exception("API_KEY environment variable is not set")
+            raise Exception("BLS_API_KEY environment variable is not set")
 
         # Fetch the latest CSV data from GitHub
         csv_data = fetch_latest_csv()
         last_row_key = get_last_row(csv_data)
 
-        # Fetch egg price data from the API
-        egg_data = fetch_egg_prices(api_key)
-        latest_egg_price = get_latest_egg_price(egg_data)
-        latest_egg_key = f"{latest_egg_price['year']}{latest_egg_price['period']}"
+        print(csv_data)
+        print(last_row_key)
 
-        # Compare and update CSV if new data is available
+        # # Fetch egg price data from the API
+        egg_data = fetch_egg_prices(api_key)
+        latest_egg_price_record = get_latest_egg_price(egg_data)
+        latest_egg_key = f"{latest_egg_price_record['year']}{latest_egg_price_record['period']}"
+
+        print(egg_data)
+
+        # # Compare and update CSV if new data is available
         if not last_row_key or latest_egg_key > last_row_key:
-            update_csv(CSV_FILE, latest_egg_price)
+            print(f"Found new egg price, adding to csv: {latest_egg_price_record['year']}{latest_egg_price_record['period']} - {latest_egg_price_record['value']}")            
+            update_csv(CSV_FILE, latest_egg_price_record)
             commit_changes()
         else:
             print("No new data to add.")
