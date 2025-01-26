@@ -1,0 +1,18 @@
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  margin: 20px;
+  box-sizing: border-box;
+}
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#logo {
+  max-width: 150px;
+}
+
+#chart-container {
+  width: 80%;
+  margin: 0 auto;
+}

@@ -1,14 +1,21 @@
 class EggChartManager {
   constructor() {
-    this.chart = null;
+    this.eggImage = this.chart = null;
     this.originalLabels = [];
     this.originalValues = [];
+    this.defaultRange = "5y";
     this.csvUrl =
       "https://raw.githubusercontent.com/clairefro/the-eggconomist/refs/heads/main/egg_prices.csv";
   }
 
   async init() {
+    // first things first
+    this.eggImage = new Image(16, 16);
+    this.eggImage.src =
+      'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><text x="0" y="14">🥚</text></svg>';
+
     await this.renderChart();
+    this.setTimeRange(this.defaultRange);
   }
 
   formatLabel(label) {
@@ -73,33 +80,38 @@ class EggChartManager {
     };
 
     const monthsToShow = periods[range];
+    const startIndex = Math.max(0, values.length - monthsToShow);
+
     return {
-      labels: labels.slice(-monthsToShow),
-      values: values.slice(-monthsToShow),
+      labels: labels.slice(startIndex),
+      values: values.slice(startIndex),
     };
   }
 
   setTimeRange(range) {
     if (!this.chart) return;
 
-    this.chart.data.labels = this.originalLabels;
-    this.chart.data.datasets[0].data = this.originalValues;
-
-    if (range !== "all") {
+    if (range === "all") {
+      this.chart.data.labels = this.originalLabels;
+      this.chart.data.datasets[0].data = this.originalValues;
+    } else {
       const filtered = this.filterDataByTimeRange(
         this.originalLabels,
         this.originalValues,
         range
       );
-
-      const { values, labels } = filtered;
-      const moms = this.getMoMs(values);
-
-      this.chart.data.labels = labels;
-      this.chart.data.datasets[0].data = values;
+      this.chart.data.labels = filtered.labels;
+      this.chart.data.datasets[0].data = filtered.values;
+      // update point styles for filtered data
+      this.updatePointStyles(filtered.values.length);
     }
 
     this.chart.update();
+  }
+
+  updatePointStyles(dataLength) {
+    this.chart.data.datasets[0].pointStyle = Array(dataLength).fill("circle");
+    this.chart.data.datasets[0].pointStyle[dataLength - 1] = this.eggImage;
   }
 
   getMoMs = (prices) => {
@@ -129,6 +141,12 @@ class EggChartManager {
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 2,
             fill: false,
+            pointStyle: values.map((_, index) =>
+              index === values.length - 1 ? this.eggImage : "circle"
+            ),
+            // pointRadius: values.map((_, index) =>
+            //   index === values.length - 1 ? 10 : 0
+            // ),
           },
         ],
       },
