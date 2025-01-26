@@ -108,6 +108,7 @@ class EggChartManager {
     }
 
     this.chart.update();
+    this.updateMetrics();
   }
 
   updatePointStyles(dataLength) {
@@ -115,12 +116,36 @@ class EggChartManager {
     this.chart.data.datasets[0].pointStyle[dataLength - 1] = this.eggImage;
   }
 
-  getMoMs = (prices) => {
-    return prices.map((price, index) => {
-      if (index === 0) return null; // mo MoM change for the first month
-      return ((price - prices[index - 1]) / prices[index - 1]) * 100;
-    });
-  };
+  // Add to EggChartManager class
+  updateMetrics() {
+    const latest = this.originalValues[this.originalValues.length - 1];
+    const prevMonth = this.originalValues[this.originalValues.length - 2];
+    const prevYear = this.originalValues[this.originalValues.length - 13];
+    const fiveYearData = this.originalValues.slice(-60);
+    const fiveYearHigh = Math.max(...fiveYearData);
+    const fiveYearHighIndex = this.originalValues.indexOf(fiveYearHigh);
+
+    // Calculate changes
+    const momChange = (((latest - prevMonth) / prevMonth) * 100).toFixed(1);
+    const yoyChange = (((latest - prevYear) / prevYear) * 100).toFixed(1);
+
+    // Update DOM
+    document.getElementById("latest-price").textContent = latest.toFixed(2);
+    document.getElementById("latest-date").textContent = this.formatLabel(
+      this.originalLabels[this.originalLabels.length - 1]
+    );
+    document.getElementById("mom-change").textContent = momChange;
+    document.getElementById("mom-trend").textContent =
+      momChange > 0 ? "↑" : "↓";
+    document.getElementById("yoy-change").textContent = yoyChange;
+    document.getElementById("yoy-trend").textContent =
+      yoyChange > 0 ? "↑" : "↓";
+    document.getElementById("five-year-high").textContent =
+      fiveYearHigh.toFixed(2);
+    document.getElementById("high-date").textContent = this.formatLabel(
+      this.originalLabels[fiveYearHighIndex]
+    );
+  }
 
   async renderChart() {
     const csvData = await this.fetchData();
@@ -130,7 +155,7 @@ class EggChartManager {
     this.originalLabels = labels;
     this.originalValues = values;
 
-    const ctx = document.getElementById("eggPriceChart").getContext("2d");
+    const ctx = document.getElementById("egg-price-chart").getContext("2d");
     this.chart = new Chart(ctx, {
       type: "line",
       data: {
@@ -149,6 +174,8 @@ class EggChartManager {
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             title: {

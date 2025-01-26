@@ -23,15 +23,48 @@
           Average Price: Eggs, Grade A, Large (Cost per Dozen) in U.S. City
           Average
         </h1>
-        <div class="chart-controls">
-          <button onclick="setTimeRange('6m')" title="Past 6 Months">6M</button>
-          <button onclick="setTimeRange('1y')" title="Past Year">1Y</button>
-          <button onclick="setTimeRange('5y')" title="Past 5 Years">5Y</button>
-          <button onclick="setTimeRange('all')" title="All Time">All</button>
-        </div>
-        <div id="chart-container">
-          <canvas id="eggPriceChart"></canvas>
-        </div>
+        <section id="chart-section">
+          <div class="chart-controls">
+            <button onclick="setTimeRange('6m')" title="Past 6 Months">
+              6M
+            </button>
+            <button onclick="setTimeRange('1y')" title="Past Year">1Y</button>
+            <button onclick="setTimeRange('5y')" title="Past 5 Years">
+              5Y
+            </button>
+            <button onclick="setTimeRange('all')" title="All Time">All</button>
+          </div>
+          <div id="chart-container">
+            <canvas id="egg-price-chart"></canvas>
+          </div>
+        </section>
+        <section class="metrics-section">
+          <div class="metric">
+            <h3>Latest Price</h3>
+            <p>$<span id="latest-price">--</span></p>
+            <p class="timestamp"><span id="latest-date">--</span></p>
+          </div>
+
+          <div class="metric">
+            <h3 title="Month-over-month">MoM</h3>
+            <p><span id="mom-change">--</span>%</p>
+            <p class="trend"><span id="mom-trend">--</span></p>
+          </div>
+
+          <div class="metric">
+            <h3 title="Year-over-year">YoY</h3>
+            <p><span id="yoy-change">--</span>%</p>
+            <p class="trend"><span id="yoy-trend">--</span></p>
+          </div>
+
+          <div class="metric">
+            <h3>5-Year High</h3>
+            <p>$<span id="five-year-high">--</span></p>
+            <p class="timestamp"><span id="high-date">--</span></p>
+          </div>
+        </section>
+
+        <p>Be the first to learn about the latest egg price (coming soon)</p>
       </main>
     </div>
 
