@@ -91,12 +91,23 @@ class EggChartManager {
         this.originalValues,
         range
       );
-      this.chart.data.labels = filtered.labels;
-      this.chart.data.datasets[0].data = filtered.values;
+
+      const { values, labels } = filtered;
+      const moms = this.getMoMs(values);
+
+      this.chart.data.labels = labels;
+      this.chart.data.datasets[0].data = values;
     }
 
     this.chart.update();
   }
+
+  getMoMs = (prices) => {
+    return prices.map((price, index) => {
+      if (index === 0) return null; // mo MoM change for the first month
+      return ((price - prices[index - 1]) / prices[index - 1]) * 100;
+    });
+  };
 
   async renderChart() {
     const csvData = await this.fetchData();
@@ -113,8 +124,7 @@ class EggChartManager {
         labels,
         datasets: [
           {
-            label:
-              "Average Price (USD): Eggs, Grade A, Large (Cost per Dozen) in U.S. City Average",
+            label: "Avg. Price (USD)",
             data: values,
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 2,
