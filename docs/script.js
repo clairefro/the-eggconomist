@@ -94,6 +94,7 @@ class EggChartManager {
     if (range === "all") {
       this.chart.data.labels = this.originalLabels;
       this.chart.data.datasets[0].data = this.originalValues;
+      this.updatePointStyles(this.originalValues.length);
     } else {
       const filtered = this.filterDataByTimeRange(
         this.originalLabels,
@@ -144,9 +145,6 @@ class EggChartManager {
             pointStyle: values.map((_, index) =>
               index === values.length - 1 ? this.eggImage : "circle"
             ),
-            // pointRadius: values.map((_, index) =>
-            //   index === values.length - 1 ? 10 : 0
-            // ),
           },
         ],
       },
