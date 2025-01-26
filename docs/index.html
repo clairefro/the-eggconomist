@@ -14,9 +14,19 @@
 
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: Georgia, "Times New Roman", Times, serif;
         margin: 20px;
+        box-sizing: border-box;
       }
+      .page-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      #logo {
+        max-width: 150px;
+      }
+
       #chart-container {
         width: 80%;
         margin: 0 auto;
@@ -24,17 +34,25 @@
     </style>
   </head>
   <body>
-    <h1>
-      Average Price: Eggs, Grade A, Large (Cost per Dozen) in U.S. City Average
-    </h1>
-    <div class="chart-controls">
-      <button onclick="setTimeRange('6m')">6M</button>
-      <button onclick="setTimeRange('1y')">1Y</button>
-      <button onclick="setTimeRange('5y')">5Y</button>
-      <button onclick="setTimeRange('all')">All</button>
-    </div>
-    <div id="chart-container">
-      <canvas id="eggPriceChart"></canvas>
+    <div class="page-container">
+      <header>
+        <img src="assets/logo.png" alt="The Eggconomist" id="logo" />
+      </header>
+      <main>
+        <h1>
+          Average Price: Eggs, Grade A, Large (Cost per Dozen) in U.S. City
+          Average
+        </h1>
+        <div class="chart-controls">
+          <button onclick="setTimeRange('6m')">6M</button>
+          <button onclick="setTimeRange('1y')">1Y</button>
+          <button onclick="setTimeRange('5y')">5Y</button>
+          <button onclick="setTimeRange('all')">All</button>
+        </div>
+        <div id="chart-container">
+          <canvas id="eggPriceChart"></canvas>
+        </div>
+      </main>
     </div>
 
     <script src="script.js"></script>
