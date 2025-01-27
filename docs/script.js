@@ -92,6 +92,13 @@ class EggChartManager {
   setTimeRange(range) {
     if (!this.chart) return;
 
+    document.querySelectorAll(".chart-controls button").forEach((btn) => {
+      btn.classList.remove("active");
+      if (btn.getAttribute("data-range") === range) {
+        btn.classList.add("active");
+      }
+    });
+
     if (range === "all") {
       this.chart.data.labels = this.originalLabels;
       this.chart.data.datasets[0].data = this.originalValues;
@@ -129,19 +136,25 @@ class EggChartManager {
     const momChange = (((latest - prevMonth) / prevMonth) * 100).toFixed(1);
     const yoyChange = (((latest - prevYear) / prevYear) * 100).toFixed(1);
 
-    const momDataEl = document.getElementById("mom-data");
-    const yoyDataEl = document.getElementById("yoy-data");
-
     document.getElementById("latest-price").textContent = latest.toFixed(2);
     document.getElementById("latest-date").textContent = this.formatLabel(
       this.originalLabels[this.originalLabels.length - 1]
     );
+
     document.getElementById("mom-change").textContent = momChange;
     document.getElementById("mom-trend").textContent =
       momChange > 0 ? "↑" : "↓";
+    document.getElementById("mom-date").textContent = this.formatLabel(
+      this.originalLabels[this.originalLabels.length - 2]
+    );
+
     document.getElementById("yoy-change").textContent = yoyChange;
     document.getElementById("yoy-trend").textContent =
       yoyChange > 0 ? "↑" : "↓";
+    document.getElementById("yoy-date").textContent = this.formatLabel(
+      this.originalLabels[this.originalLabels.length - 13]
+    );
+
     document.getElementById("five-year-high").textContent =
       fiveYearHigh.toFixed(2);
     document.getElementById("high-date").textContent = this.formatLabel(
@@ -149,6 +162,8 @@ class EggChartManager {
     );
 
     // append classes for -/+ color change
+    const momDataEl = document.getElementById("mom-data");
+    const yoyDataEl = document.getElementById("yoy-data");
 
     momDataEl.classList.remove("trend-up", "trend-down");
     yoyDataEl.classList.remove("trend-up", "trend-down");

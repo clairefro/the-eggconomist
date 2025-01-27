@@ -25,18 +25,41 @@
         </h1>
         <section id="chart-section">
           <div class="chart-controls">
-            <button onclick="setTimeRange('6m')" title="Past 6 Months">
+            <button
+              data-range="6m"
+              onclick="setTimeRange('6m')"
+              title="Past 6 Months"
+            >
               6M
             </button>
-            <button onclick="setTimeRange('1y')" title="Past Year">1Y</button>
-            <button onclick="setTimeRange('5y')" title="Past 5 Years">
+            <button
+              data-range="1y"
+              onclick="setTimeRange('1y')"
+              title="Past Year"
+            >
+              1Y
+            </button>
+            <button
+              data-range="5y"
+              onclick="setTimeRange('5y')"
+              title="Past 5 Years"
+            >
               5Y
             </button>
-            <button onclick="setTimeRange('all')" title="All Time">All</button>
+            <button
+              data-range="all"
+              onclick="setTimeRange('all')"
+              title="All Time"
+            >
+              All
+            </button>
           </div>
           <div id="chart-container">
             <canvas id="egg-price-chart"></canvas>
           </div>
+          <p class="subscript" id="chart-source">
+            Source: U.S. Bureau of Labor Statistics
+          </p>
         </section>
         <section class="metrics-section">
           <div class="metric">
@@ -51,6 +74,7 @@
               <span class="trend" id="mom-trend">--</span>
               <span id="mom-change">--</span>%
             </p>
+            <p class="timestamp"><span id="mom-date">--</span></p>
           </div>
 
           <div class="metric">
@@ -60,6 +84,7 @@
 
               <span id="yoy-change">--</span>%
             </p>
+            <p class="timestamp"><span id="yoy-date">--</span></p>
           </div>
 
           <div class="metric">
@@ -68,8 +93,35 @@
             <p class="timestamp"><span id="high-date">--</span></p>
           </div>
         </section>
-
-        <p>Be the first to learn about the latest egg price (coming soon)</p>
+        <section>
+          <p>Be the first to learn about the latest egg price (coming soon)</p>
+        </section>
+        <section>
+          <h2>Frequently asked questions</h2>
+          <h3>Eggs are way more expensive that that where I live...</h3>
+          <p>
+            This shows US national average egg prices to track whether egg price
+            went up or down nationally. For breakdowns by region and egg type,
+            see the eggcellent
+            <a
+              href="https://ag.purdue.edu/cfdas/resource-library/egg-prices/"
+              rel="noopener noreferrer nofollow"
+              >Egg Price Tracker by Purdue University</a
+            >
+          </p>
+        </section>
+        <section>
+          <h2>Egg resources</h2>
+          <ul>
+            <li>
+              <a
+                href="https://ag.purdue.edu/cfdas/resource-library/egg-prices/"
+                rel="noopener noreferrer nofollow"
+                >Egg Price Tracker by Purdue University</a
+              >
+            </li>
+          </ul>
+        </section>
       </main>
     </div>
 
