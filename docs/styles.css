@@ -103,6 +103,7 @@ a:visited {
 .metric {
   padding: 1rem;
   text-align: center;
+  transform: scale(1.2);
 }
 
 .metric h3 {
