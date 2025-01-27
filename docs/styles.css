@@ -26,7 +26,8 @@ h3 {
   color: var(--color-muted);
 }
 
-p {
+p,
+li {
   line-height: 1.5rem;
 }
 
@@ -144,10 +145,17 @@ a:visited {
 
 @media (max-width: 768px) {
   body {
-    padding: 0.5rem;
+    padding: 0.25rem;
   }
   .metrics-section {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+  .metric {
+    padding: 0.25rem;
+    transform: scale(0.9);
+  }
+  .metric h3 {
+    margin-top: 0;
   }
 }

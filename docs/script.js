@@ -201,6 +201,11 @@ class EggChartManager {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: "nearest",
+          axis: "x",
+        },
         scales: {
           x: {
             title: {
