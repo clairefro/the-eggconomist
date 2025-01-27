@@ -237,6 +237,8 @@ class EggChartManager {
   }
 }
 
+// -------------------------------------------------
+
 const eggChartManager = new EggChartManager();
 eggChartManager.init();
 
