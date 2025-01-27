@@ -19,6 +19,7 @@ class EggChartManager {
   }
 
   formatLabel(label) {
+    console.log({ label });
     if (!/^\d{4}-M\d{2}$/.test(label)) {
       console.warn(`Invalid label format: ${label}`);
       return label;
@@ -125,11 +126,12 @@ class EggChartManager {
     const fiveYearHigh = Math.max(...fiveYearData);
     const fiveYearHighIndex = this.originalValues.indexOf(fiveYearHigh);
 
-    // Calculate changes
     const momChange = (((latest - prevMonth) / prevMonth) * 100).toFixed(1);
     const yoyChange = (((latest - prevYear) / prevYear) * 100).toFixed(1);
 
-    // Update DOM
+    const momDataEl = document.getElementById("mom-data");
+    const yoyDataEl = document.getElementById("yoy-data");
+
     document.getElementById("latest-price").textContent = latest.toFixed(2);
     document.getElementById("latest-date").textContent = this.formatLabel(
       this.originalLabels[this.originalLabels.length - 1]
@@ -145,6 +147,14 @@ class EggChartManager {
     document.getElementById("high-date").textContent = this.formatLabel(
       this.originalLabels[fiveYearHighIndex]
     );
+
+    // append classes for -/+ color change
+
+    momDataEl.classList.remove("trend-up", "trend-down");
+    yoyDataEl.classList.remove("trend-up", "trend-down");
+
+    momDataEl.classList.add(momChange > 0 ? "trend-up" : "trend-down");
+    yoyDataEl.classList.add(yoyChange > 0 ? "trend-up" : "trend-down");
   }
 
   async renderChart() {
