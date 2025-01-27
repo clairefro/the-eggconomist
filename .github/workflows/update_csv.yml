@@ -1,7 +1,7 @@
 name: Update CSV Data
 on:
   schedule:
-    - cron: "0 0,12 10-25 * *" # Runs at midnight and noon UTC, 10th-20th each month
+    - cron: "*/30 * 10-20 * *" # Runs every 30 mins, 10th-20th each month
   workflow_dispatch: # Allow manual triggering
 
 jobs:
