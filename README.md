@@ -6,6 +6,11 @@ Eggspert analysis on the US economy.
 
 [Average Price: Eggs, Grade A, Large (Cost per Dozen) in U.S. City Average  (APU0000708111)](https://fred.stlouisfed.org/series/APU0000708111)
 
+Series IDs
+
+- Avg Price: APU0000708111
+- CPI: CUUR0000SEFH
+
 Data source: [U.S. Bureau of Labor Statistics](https://www.bls.gov/)
 
 ### Development
