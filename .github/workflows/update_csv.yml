@@ -22,4 +22,5 @@ jobs:
       - name: Run Python script
         env:
           BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python update_egg_prices.py
