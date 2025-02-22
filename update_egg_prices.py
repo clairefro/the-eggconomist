@@ -55,7 +55,7 @@ def commit_changes():
 
     if os.getenv("GITHUB_ACTIONS") == "true":
         print("Running in GitHub Actions. Committing changes...")
-        token = os.getenv("GITHUB_TOKEN")
+        token = os.getenv("PAT_TOKEN")
         if not token:
             raise Exception("GITHUB_TOKEN environment variable is not set")
         subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
