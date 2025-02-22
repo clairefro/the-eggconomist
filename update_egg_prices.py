@@ -2,6 +2,7 @@ import requests
 import csv
 from datetime import datetime
 import os
+import subprocess
 
 # Constants
 CSV_URL = "https://raw.githubusercontent.com/clairefro/the-eggconomist/refs/heads/main/egg_prices.csv"  
@@ -50,15 +51,18 @@ def update_csv(file_path, new_data):
 
 def commit_changes():
     """Commit changes to the CSV file."""
-    import subprocess
+    
 
     if os.getenv("GITHUB_ACTIONS") == "true":
         print("Running in GitHub Actions. Committing changes...")
-        subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
-        subprocess.run(["git", "config", "--global", "user.email", "actions@github.com"])
+        token = os.getenv("GITHUB_TOKEN")
+        if not token:
+            raise Exception("GITHUB_TOKEN environment variable is not set")
+        subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
+        subprocess.run(["git", "config", "--global", "user.email", "github-actions[bot]@users.noreply.github.com"])
         subprocess.run(["git", "add", "egg_prices.csv"])
         subprocess.run(["git", "commit", "-m", "Update egg prices"])
-        subprocess.run(["git", "push"])
+        subprocess.run(["git", "push", f"https://{token}@github.com/{os.getenv('GITHUB_REPOSITORY')}.git"])
     else:
         print("Not running in GitHub Actions. Skipping commit.")
 
